@@ -20,6 +20,7 @@ import math
 from functools import reduce
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.axes3d import Axes3D
+import scipy.integrate
 import inspect
 
 savedName = 'Default'
@@ -1483,6 +1484,20 @@ class bhat2(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.user.setText(_translate("MainWindow", "User"))
         self.analyst.setText(_translate("MainWindow", "Analyst"))
+        self.user.clicked.connect(self.userBtn)
+        self.analyst.clicked.connect(self.analystBtn)
+
+    def userBtn(self):
+        bhat2Window.hide()
+        self.MainWindowUi = bhat3()
+        self.MainWindowUi.setupUi(bhat3Window)
+        bhat3Window.show()
+
+    def analystBtn(self):
+        bhat2Window.hide()
+        self.MainWindowUi = bhat4()
+        self.MainWindowUi.setupUi(bhat3Window)
+        bhat3Window.show()
 
 
 class bhat3(object):
@@ -1491,120 +1506,123 @@ class bhat3(object):
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.widget = QtWidgets.QWidget(self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(180, 90, 448, 340))
-        self.widget.setObjectName("widget")
-        self.gridLayout = QtWidgets.QGridLayout(self.widget)
+        self.layoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.layoutWidget.setGeometry(QtCore.QRect(180, 90, 511, 340))
+        self.layoutWidget.setObjectName("layoutWidget")
+        self.gridLayout = QtWidgets.QGridLayout(self.layoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setObjectName("gridLayout")
-        self.mean = QtWidgets.QLabel(self.widget)
+        self.mean = QtWidgets.QLabel(self.layoutWidget)
         self.mean.setObjectName("mean")
         self.gridLayout.addWidget(self.mean, 0, 1, 1, 1)
-        self.standarddeviation = QtWidgets.QLabel(self.widget)
+        self.standarddeviation = QtWidgets.QLabel(self.layoutWidget)
         self.standarddeviation.setObjectName("standarddeviation")
         self.gridLayout.addWidget(self.standarddeviation, 0, 2, 1, 1)
-        self.label_3 = QtWidgets.QLabel(self.widget)
+        self.label_3 = QtWidgets.QLabel(self.layoutWidget)
         self.label_3.setObjectName("label_3")
         self.gridLayout.addWidget(self.label_3, 1, 0, 1, 1)
-        self.cs137cs133 = QtWidgets.QLineEdit(self.widget)
+        self.cs137cs133 = QtWidgets.QLineEdit(self.layoutWidget)
         self.cs137cs133.setObjectName("cs137cs133")
         self.gridLayout.addWidget(self.cs137cs133, 1, 1, 1, 1)
-        self.cs137cs133E = QtWidgets.QLineEdit(self.widget)
+        self.cs137cs133E = QtWidgets.QLineEdit(self.layoutWidget)
         self.cs137cs133E.setObjectName("cs137cs133E")
         self.gridLayout.addWidget(self.cs137cs133E, 1, 2, 1, 1)
-        self.label_4 = QtWidgets.QLabel(self.widget)
+        self.label_4 = QtWidgets.QLabel(self.layoutWidget)
         self.label_4.setObjectName("label_4")
         self.gridLayout.addWidget(self.label_4, 2, 0, 1, 1)
-        self.cs134cs137 = QtWidgets.QLineEdit(self.widget)
+        self.cs134cs137 = QtWidgets.QLineEdit(self.layoutWidget)
         self.cs134cs137.setObjectName("cs134cs137")
         self.gridLayout.addWidget(self.cs134cs137, 2, 1, 1, 1)
-        self.cs134cs137E = QtWidgets.QLineEdit(self.widget)
+        self.cs134cs137E = QtWidgets.QLineEdit(self.layoutWidget)
         self.cs134cs137E.setObjectName("cs134cs137E")
         self.gridLayout.addWidget(self.cs134cs137E, 2, 2, 1, 1)
-        self.label_5 = QtWidgets.QLabel(self.widget)
+        self.label_5 = QtWidgets.QLabel(self.layoutWidget)
         self.label_5.setObjectName("label_5")
         self.gridLayout.addWidget(self.label_5, 3, 0, 1, 1)
-        self.cs135cs137 = QtWidgets.QLineEdit(self.widget)
+        self.cs135cs137 = QtWidgets.QLineEdit(self.layoutWidget)
         self.cs135cs137.setObjectName("cs135cs137")
         self.gridLayout.addWidget(self.cs135cs137, 3, 1, 1, 1)
-        self.cs135cs137E = QtWidgets.QLineEdit(self.widget)
+        self.cs135cs137E = QtWidgets.QLineEdit(self.layoutWidget)
         self.cs135cs137E.setObjectName("cs135cs137E")
         self.gridLayout.addWidget(self.cs135cs137E, 3, 2, 1, 1)
-        self.nextBtn = QtWidgets.QPushButton(self.widget)
+        self.nextBtn = QtWidgets.QPushButton(self.layoutWidget)
         self.nextBtn.setObjectName("nextBtn")
         self.gridLayout.addWidget(self.nextBtn, 3, 3, 2, 1)
-        self.label_6 = QtWidgets.QLabel(self.widget)
+        self.label_6 = QtWidgets.QLabel(self.layoutWidget)
         self.label_6.setObjectName("label_6")
         self.gridLayout.addWidget(self.label_6, 4, 0, 2, 1)
-        self.eu154eu153 = QtWidgets.QLineEdit(self.widget)
+        self.eu154eu153 = QtWidgets.QLineEdit(self.layoutWidget)
         self.eu154eu153.setObjectName("eu154eu153")
         self.gridLayout.addWidget(self.eu154eu153, 4, 1, 2, 1)
-        self.eu154eu153E = QtWidgets.QLineEdit(self.widget)
+        self.eu154eu153E = QtWidgets.QLineEdit(self.layoutWidget)
         self.eu154eu153E.setObjectName("eu154eu153E")
         self.gridLayout.addWidget(self.eu154eu153E, 4, 2, 2, 1)
-        self.backBtn = QtWidgets.QPushButton(self.widget)
+        self.backBtn = QtWidgets.QPushButton(self.layoutWidget)
         self.backBtn.setObjectName("backBtn")
         self.gridLayout.addWidget(self.backBtn, 5, 3, 2, 1)
-        self.label_7 = QtWidgets.QLabel(self.widget)
+        self.label_7 = QtWidgets.QLabel(self.layoutWidget)
         self.label_7.setObjectName("label_7")
         self.gridLayout.addWidget(self.label_7, 6, 0, 1, 1)
-        self.sm150sm149 = QtWidgets.QLineEdit(self.widget)
+        self.sm150sm149 = QtWidgets.QLineEdit(self.layoutWidget)
         self.sm150sm149.setObjectName("sm150sm149")
         self.gridLayout.addWidget(self.sm150sm149, 6, 1, 1, 1)
-        self.sm150sm149E = QtWidgets.QLineEdit(self.widget)
+        self.sm150sm149E = QtWidgets.QLineEdit(self.layoutWidget)
         self.sm150sm149E.setObjectName("sm150sm149E")
         self.gridLayout.addWidget(self.sm150sm149E, 6, 2, 1, 1)
-        self.label_8 = QtWidgets.QLabel(self.widget)
+        self.label_8 = QtWidgets.QLabel(self.layoutWidget)
         self.label_8.setObjectName("label_8")
         self.gridLayout.addWidget(self.label_8, 7, 0, 1, 1)
-        self.sm152sm149 = QtWidgets.QLineEdit(self.widget)
+        self.sm152sm149 = QtWidgets.QLineEdit(self.layoutWidget)
         self.sm152sm149.setObjectName("sm152sm149")
         self.gridLayout.addWidget(self.sm152sm149, 7, 1, 1, 1)
-        self.sm152sm149E = QtWidgets.QLineEdit(self.widget)
+        self.sm152sm149E = QtWidgets.QLineEdit(self.layoutWidget)
         self.sm152sm149E.setObjectName("sm152sm149E")
         self.gridLayout.addWidget(self.sm152sm149E, 7, 2, 1, 1)
-        self.cancelBtn = QtWidgets.QPushButton(self.widget)
+        self.cancelBtn = QtWidgets.QPushButton(self.layoutWidget)
         self.cancelBtn.setObjectName("cancelBtn")
         self.gridLayout.addWidget(self.cancelBtn, 7, 3, 1, 1)
-        self.label_9 = QtWidgets.QLabel(self.widget)
+        self.label_9 = QtWidgets.QLabel(self.layoutWidget)
         self.label_9.setObjectName("label_9")
         self.gridLayout.addWidget(self.label_9, 8, 0, 1, 1)
-        self.pu240pu239 = QtWidgets.QLineEdit(self.widget)
+        self.pu240pu239 = QtWidgets.QLineEdit(self.layoutWidget)
         self.pu240pu239.setObjectName("pu240pu239")
         self.gridLayout.addWidget(self.pu240pu239, 8, 1, 1, 1)
-        self.pu240pu239E = QtWidgets.QLineEdit(self.widget)
+        self.pu240pu239E = QtWidgets.QLineEdit(self.layoutWidget)
         self.pu240pu239E.setObjectName("pu240pu239E")
         self.gridLayout.addWidget(self.pu240pu239E, 8, 2, 1, 1)
-        self.label_10 = QtWidgets.QLabel(self.widget)
+        self.label_10 = QtWidgets.QLabel(self.layoutWidget)
         self.label_10.setObjectName("label_10")
         self.gridLayout.addWidget(self.label_10, 9, 0, 1, 1)
-        self.pu241pu239 = QtWidgets.QLineEdit(self.widget)
+        self.pu241pu239 = QtWidgets.QLineEdit(self.layoutWidget)
         self.pu241pu239.setObjectName("pu241pu239")
         self.gridLayout.addWidget(self.pu241pu239, 9, 1, 1, 1)
-        self.pu241pu239E = QtWidgets.QLineEdit(self.widget)
+        self.pu241pu239E = QtWidgets.QLineEdit(self.layoutWidget)
         self.pu241pu239E.setObjectName("pu241pu239E")
         self.gridLayout.addWidget(self.pu241pu239E, 9, 2, 1, 1)
-        self.label_11 = QtWidgets.QLabel(self.widget)
+        self.label_11 = QtWidgets.QLabel(self.layoutWidget)
         self.label_11.setObjectName("label_11")
         self.gridLayout.addWidget(self.label_11, 10, 0, 1, 1)
-        self.pu242pu239 = QtWidgets.QLineEdit(self.widget)
+        self.pu242pu239 = QtWidgets.QLineEdit(self.layoutWidget)
         self.pu242pu239.setObjectName("pu242pu239")
         self.gridLayout.addWidget(self.pu242pu239, 10, 1, 1, 1)
-        self.pu242pu239E = QtWidgets.QLineEdit(self.widget)
+        self.pu242pu239E = QtWidgets.QLineEdit(self.layoutWidget)
         self.pu242pu239E.setObjectName("pu242pu239E")
         self.gridLayout.addWidget(self.pu242pu239E, 10, 2, 1, 1)
-        self.label_12 = QtWidgets.QLabel(self.widget)
+        self.label_12 = QtWidgets.QLabel(self.layoutWidget)
         self.label_12.setObjectName("label_12")
         self.gridLayout.addWidget(self.label_12, 11, 0, 1, 1)
-        self.ba136ba138 = QtWidgets.QLineEdit(self.widget)
+        self.ba136ba138 = QtWidgets.QLineEdit(self.layoutWidget)
         self.ba136ba138.setObjectName("ba136ba138")
         self.gridLayout.addWidget(self.ba136ba138, 11, 1, 1, 1)
-        self.ba136ba138E = QtWidgets.QLineEdit(self.widget)
+        self.ba136ba138E = QtWidgets.QLineEdit(self.layoutWidget)
         self.ba136ba138E.setObjectName("ba136ba138E")
         self.gridLayout.addWidget(self.ba136ba138E, 11, 2, 1, 1)
-        self.errorinp = QtWidgets.QRadioButton(self.widget)
+        self.errorinp = QtWidgets.QRadioButton(self.layoutWidget)
         self.errorinp.setObjectName("errorinp")
         self.gridLayout.addWidget(self.errorinp, 2, 3, 1, 1)
+        self.radioButton = QtWidgets.QRadioButton(self.layoutWidget)
+        self.radioButton.setObjectName("radioButton")
+        self.gridLayout.addWidget(self.radioButton, 1, 3, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
@@ -1636,8 +1654,297 @@ class bhat3(object):
         self.label_11.setText(_translate("MainWindow", "242Pu/239Pu"))
         self.label_12.setText(_translate("MainWindow", "136Ba/138Ba"))
         self.errorinp.setText(_translate("MainWindow", "SD in %"))
+        self.radioButton.setText(_translate("MainWindow", "Set same error"))
+        self.nextBtn.clicked.connect(self.nextFunc)
+
+    def nextFunc(self):
+        ratios = []
+        cs137cs133 = float(self.cs137cs133.text())
+        cs134cs137 = float(self.cs134cs137.text())
+        cs135cs137 = float(self.cs135cs137.text())
+        eu154eu153 = float(self.eu154eu153.text())
+        sm150sm149 = float(self.sm150sm149.text())
+        sm152sm149 = float(self.sm152sm149.text())
+        pu240pu239 = float(self.pu240pu239.text())
+        pu241pu239 = float(self.pu241pu239.text())
+        pu242pu239 = float(self.pu242pu239.text())
+        ba136ba138 = float(self.ba136ba138.text())
 
 
+        if cs137cs133 == -1:
+            ratios.append(-1)
+        else:
+            ratios.append(cs137cs133)
+
+        if eu154eu153 == -1:
+            ratios.append(-1)
+        else:
+            ratios.append(eu154eu153)
+
+        if cs134cs137 == -1:
+            ratios.append(-1)
+        else:
+            ratios.append(cs134cs137)
+
+        if cs135cs137 == -1:
+            ratios.append(-1)
+        else:
+            ratios.append(cs135cs137)
+
+        if ba136ba138 == -1:
+            ratios.append(-1)
+        else:
+            ratios.append(ba136ba138)
+
+        if sm150sm149 == -1:
+            ratios.append(-1)
+        else:
+            ratios.append(sm150sm149)
+
+        if sm152sm149 == -1:
+            ratios.append(-1)
+        else:
+            ratios.append(sm152sm149)
+
+        if pu242pu239 == -1:
+            ratios.append(-1)
+        else:
+            ratios.append(pu242pu239)
+
+        if pu241pu239 == -1:
+            ratios.append(-1)
+        else:
+            ratios.append(pu241pu239)
+        
+        if pu240pu239 == -1:
+            ratios.append(-1)
+        else:
+            ratios.append(pu240pu239)
+
+        if self.radioButton.isChecked():
+            values = [self.cs137cs133E.text(), self.eu154eu153E.text(), self.cs134cs137E.text(), self.cs135cs137E.text(), self.ba136ba138E.text(), self.sm150sm149E.text(), self.sm152sm149E.text(), self.pu242pu239E.text(), self.pu241pu239E.text(), self.pu240pu239E.text()]
+            for val in values:
+                print(val)
+                if len(val) != 0:
+                    print('taking 23')
+                    cs137cs133Ep = float(val)
+                    eu154eu153Ep = float(val)
+                    cs134cs137Ep = float(val)
+                    cs135cs137Ep = float(val)
+                    ba136ba138Ep = float(val)
+                    sm150sm149Ep = float(val)
+                    sm152sm149Ep = float(val)
+                    pu242pu239Ep = float(val)
+                    pu241pu239Ep = float(val)
+                    pu240pu239Ep = float(val)
+                
+            
+        else:
+            cs137cs133Ep = float(self.cs137cs133E.text())
+            eu154eu153Ep = float(self.eu154eu153E.text())
+            cs134cs137Ep = float(self.cs134cs137E.text())
+            cs135cs137Ep = float(self.cs135cs137E.text())
+            ba136ba138Ep = float(self.ba136ba138E.text())
+            sm150sm149Ep = float(self.sm150sm149E.text())
+            sm152sm149Ep = float(self.sm152sm149E.text())
+            pu242pu239Ep = float(self.pu242pu239E.text())
+            pu241pu239Ep = float(self.pu241pu239E.text())
+            pu240pu239Ep = float(self.pu240pu239E.text())
+            
+        if self.radioButton_2.isChecked():
+            cs137cs133E = (cs137cs133Ep*cs137cs133)/100
+            eu154eu153E = (eu154eu153Ep*eu154eu153)/100
+            cs134cs137E = (cs134cs137*cs134cs137Ep)/100
+            cs135cs137E = (cs135cs137Ep*cs135cs137)/100
+            ba136ba138E = (ba136ba138Ep*ba136ba138)/100
+            sm150sm149E = (sm150sm149Ep*sm150sm149)/100
+            sm152sm149E = (sm152sm149Ep*sm152sm149)/100
+            pu242pu239E = (pu242pu239Ep*pu242pu239)/100
+            pu241pu239E = (pu241pu239Ep*pu241pu239)/100
+            pu240pu239E = (pu240pu239Ep*pu240pu239)/100
+        
+        else:
+            cs137cs133E = cs137cs133Ep
+            eu154eu153E = eu154eu153Ep
+            cs134cs137E = cs134cs137Ep
+            cs135cs137E = cs135cs137Ep
+            ba136ba138E = ba136ba138Ep
+            sm150sm149E = sm150sm149Ep
+            sm152sm149E = sm152sm149Ep
+            pu242pu239E = pu242pu239Ep
+            pu241pu239E = pu241pu239Ep
+            pu240pu239E = pu240pu239Ep
+            
+            
+        
+
+        errors = []
+        if ratios[0] == -1:
+            errors.append(-1)
+        else:
+            errors.append(cs137cs133E)
+
+        if ratios[1] == -1:
+            errors.append(-1)
+        else:
+            errors.append(eu154eu153E)
+
+        if ratios[2] == -1:
+            errors.append(-1)
+        else:
+            errors.append(cs134cs137E)
+
+        if ratios[3] == -1:
+            errors.append(-1)
+        else:
+            errors.append(cs135cs137E)
+
+        if ratios[4] == -1:
+            errors.append(-1)
+        else:
+            errors.append(ba136ba138E)
+
+        if ratios[5] == -1:
+            errors.append(-1)
+        else:
+            errors.append(sm150sm149E)
+
+        if ratios[6] == -1:
+            errors.append(-1)
+        else:
+            errors.append(sm152sm149E)
+
+        if ratios[7] == -1:
+            errors.append(-1)
+        else:
+            errors.append(pu242pu239E)
+
+        if ratios[8] == -1:
+            errors.append(-1)
+        else:
+            errors.append(pu241pu239E)
+
+        if ratios[9] == -1:
+            errors.append(-1)
+        else:
+            errors.append(pu240pu239E)
+
+
+        global savedName
+        current_dir = os.getcwd()
+        current_dir = current_dir + '/' + savedName
+        with open(current_dir + '/sheet_names.csv', 'r') as f:
+            reader = csv.reader(f)
+            sheet_names = list(reader.__next__())
+            time_range = [float(x) for x in reader.__next__()]
+            r = [float(x) for x in reader.__next__()]
+        #print(sheet_names)
+        #print(time_range)
+        #print(r)
+        #d = pd.read_csv(current_dir + '/sheet_names.csv', header = None)
+        
+        file_names = ['137CS  133Cs', '154Eu  153Eu', '134Cs  137Cs',
+                      '135Cs  137Cs', '136Ba  138Ba', '150Sm  149Sm', '152Sm  149Sm', '242Pu  239Pu',
+                      '241Pu  239Pu', '240Pu  239Pu']
+        #sheet_names = list(d.iloc[0])
+        #time_range = list(d.iloc[1])
+        #r = list(d.iloc[2])
+        y = len(time_range)
+        x = len(r)
+        
+        num_plots = len(sheet_names)
+        if num_plots <= 5:
+            row = 1
+            col = num_plots
+
+        else:
+            col = 5
+            row = math.ceil(num_plots/5)
+
+        u = 1
+        fig = plt.figure(figsize = plt.figaspect(0.5))
+        
+        count = 0
+        maxVal_param = []
+        maxVal = -1000000000000000000
+        final_wind = []
+        for sheet in sheet_names:
+            dfs = []
+            dfs_size = 0
+            for name in file_names:
+                #print(sheet)
+                dfs.append(pd.read_csv(current_dir + '/' + sheet + name + '.csv', header = 0, index_col = 0))
+                dfs_size = dfs_size + 1
+            matrix_dfs = []
+            for d in dfs:
+                matrix_dfs.append(d.values)
+                #print('d values ', d.values)
+            temp_dfs = []
+            temp1 = []
+            temp2 = []
+            temp_error = []
+            for k in range(dfs_size):
+                if ratios[k] != -1 and errors[k] != -1:
+                #print(((matrix_dfs[k] - ratios[k])**2)/(errors[k]**2))
+                #print(np.exp(((matrix_dfs[k] - ratios[k])**2)/(errors[k]**2)))
+                    temp1.append((np.square(ratios[k] - matrix_dfs[k]))/(2*(np.square(0.14*matrix_dfs[k]))))
+                    temp2.append(np.log(1/((0.14*matrix_dfs[k])*math.sqrt(2*math.pi))))
+                    #Error Log L(M|Tmes) = Sum[ (Tmes - Tsim)/(error_sim^2))^2 * (error_mes^2 + error_sim^2)]
+                    temp_error.append(np.square(np.divide((ratios[k] - matrix_dfs[k]),(np.square(0.14*matrix_dfs[k])), out = np.zeros_like(matrix_dfs[k]), where = matrix_dfs[k] != 0)) * (errors[k]**2 + np.square(0.14*matrix_dfs[k])))
+            a = 0
+            for i in range(0, len(temp2)):
+                a = a + temp2[i]
+            #a = reduce((lambda x, y: x + y), temp2)
+            b = 0
+            for i in range(0, len(temp1)):
+                b = b + temp1[i]
+            
+            error_value = 0
+            
+            for i in range(0, len(temp_error)):
+                error_value = error_value + temp_error[i]
+            #temp1 = reduce((lambda x, y: x + y), temp1)
+            #print('a ', a)
+            ans = (a - b)
+            print(a.shape)
+            #print(error_value)
+            #if 
+            maxVal_param.append(ans.max())
+            #print(ans)
+            #print(ans.max())
+            ans = ans[..., 1:]
+            num_row, num_col = ans.shape
+            maxVal = -1000000000000
+            maxX = 0
+            maxY = 0
+            error = 0
+            for i in range(0, num_row):
+                for j in range(0, num_col):
+                    if ans[i, j] > maxVal:
+                        #print(maxVal)
+                        maxVal = ans[i, j]
+                        maxX = i
+                        maxY = j
+                        error = error_value[i, j]
+                        
+            rVals = []
+            for k in range(dfs_size):
+                rVals.append(matrix_dfs[k][maxX, maxY])
+            temp_str = '137C/133Cs: {}, 154Eu/153Eu: {}, 134Cs/137Cs {}, 135Cs/137Cs {}, 136Ba/138Ba: {}, 150Sm/149Sm: {}, 152Sm/149Sm: {}, 242Pu/239Pu: {}, 241Pu/239Pu: {}, 240Pu/239Pu: {}'.format(np.round(rVals[0], 2),np.round(rVals[1], 2),np.round(rVals[2], 2),np.round(rVals[3], 2),np.round(rVals[4], 2),np.round(rVals[5], 2),np.round(rVals[6], 2),np.round(rVals[7], 2),np.round(rVals[8], 2),np.round(rVals[9], 2))
+            final_wind.append(temp_str)
+            #print(ans)
+            print(maxVal, maxX, maxY)
+            for i in range(len(matrix_dfs)):
+                print(matrix_dfs[i][maxX, maxY])
+            
+
+        
+
+        
+        
+
+
+    
 class bhat4(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
